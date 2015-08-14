@@ -5,7 +5,6 @@ yum -y install crypto-utils
 yum -y install git 
 yum -y install sudo
 yum -y install wget
-yum -y install ntp.x86_64
 yum groupinstall -y 'development tools'
 yum -y install zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gdbm-devel db4-devel libpcap-devel xz-devel
 yum -y install tar
