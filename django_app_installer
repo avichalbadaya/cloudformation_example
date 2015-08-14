@@ -20,4 +20,4 @@ mezzanine-project project_name
 cd project_name
 python manage.py createdb --noinput
 cd /opt/Project/project_name/
-python manage.py runserver
+service django_app_init start
