@@ -1,18 +1,23 @@
 #!/bin/bash
-yum -y update && yum clean all
-yum -y install mod_ssl
-yum -y install crypto-utils
-yum -y install git 
-yum -y install sudo
-yum -y install wget
-yum groupinstall -y 'development tools'
-yum -y install zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gdbm-devel db4-devel libpcap-devel xz-devel
-yum -y install tar
-cd /tmp && wget http://python.org/ftp/python/2.7.6/Python-2.7.6.tar.xz && tar xf Python-2.7.6.tar.xz && cd Python-2.7.6 && ./configure --prefix=/usr/local --enable-unicode=ucs4 --enable-shared LDFLAGS="-Wl,-rpath /usr/local/lib" && make && make altinstall
-cd /tmp && wget https://bitbucket.org/pypa/setuptools/raw/bootstrap/ez_setup.py && python2.7 ez_setup.py
+cd /tmp 
+wget http://python.org/ftp/python/2.7.6/Python-2.7.6.tar.xz
+tar xf Python-2.7.6.tar.xz
+cd Python-2.7.6 
+./configure --prefix=/usr/local --enable-unicode=ucs4 --enable-shared LDFLAGS="-Wl,-rpath /usr/local/lib" 
+make 
+make altinstall
+cd /tmp
+wget https://bitbucket.org/pypa/setuptools/raw/bootstrap/ez_setup.py
+python2.7 ez_setup.py
 easy_install-2.7 virtualenv
-cd /opt && mkdir Project && cd Project && virtualenv . && . bin/activate && pip install mezzanine && mezzanine-project project_name && cd project_name && python manage.py createdb --noinput
-cd /opt/Project/project_name/ && python manage.py runserver && tail -F /opt/Project/access.log
-yum -y install epel-release
-yum -y install nginx
-service nginx start
+cd /opt 
+mkdir Project
+cd Project 
+virtualenv .
+. bin/activate
+pip install mezzanine
+mezzanine-project project_name
+cd project_name
+python manage.py createdb --noinput
+cd /opt/Project/project_name/
+python manage.py runserver
