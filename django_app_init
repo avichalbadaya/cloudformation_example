@@ -1,0 +1,56 @@
+#!/bin/bash
+# /etc/init.d/django_app_init
+### BEGIN INIT INFO
+# Provides: django_app_init
+# Required-Start: 
+# Should-Start: 
+# Required-Stop: 
+# Should-Stop:
+# Default-Start:  3 5
+# Default-Stop:   0 1 2 6
+# Short-Description: Test daemon process
+# Description:    Runs up the test daemon process
+### END INIT INFO
+
+RETVAL=0
+prog="python"
+
+start() {
+    echo "Starting server"
+    # Start the daemon
+    cd /opt/Project/project_name/
+    . /opt/Project/bin/activate
+    nohup python manage.py runserver & 
+    RETVAL=$?
+    echo "Server Started"
+    [ $RETVAL -eq 0 ] && touch /var/lock/subsys/$prog
+    return $RETVAL
+    }
+stop() {
+    echo "Stopping server"
+    pkill -f gunicorn
+    RETVAL=$?
+    echo "Server Stopped"
+    [ $RETVAL -eq 0 ] && rm -f /var/lock/subsys/$prog
+}
+case "$1" in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    status)
+        status $prog
+    	RETVAL=$?
+        ;;
+    restart)
+        stop
+        start
+	RETVAL=$?
+        ;;
+    *)
+        echo $"Usage: $prog {start|stop|restart|status}"
+        RETVAL=2
+esac
+exit $RETVAL
