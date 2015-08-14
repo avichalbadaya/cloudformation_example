@@ -1,0 +1,19 @@
+#!/bin/bash
+yum -y update && yum clean all
+yum -y install mod_ssl
+yum -y install crypto-utils
+yum -y install git 
+yum -y install sudo
+yum -y install wget
+yum -y install ntpd
+yum groupinstall -y 'development tools'
+yum -y install zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gdbm-devel db4-devel libpcap-devel xz-devel
+yum -y install tar
+yum -y install epel-release
+cd /tmp && wget http://nginx.org/packages/centos/6/noarch/RPMS/nginx-release-centos-6-0.el6.ngx.noarch.rpm && rpm -ivh nginx-release-centos-6-0.el6.ngx.noarch.rpm
+yum install nginx
+rpm -Uvh https://download.newrelic.com/pub/newrelic/el5/x86_64/newrelic-repo-5-3.noarch.rpm
+yum -y install newrelic-sysmond
+nrsysmond-config --set license_key=38874c0f5f7ad5e8a9169ac619a5ea8062267ae6
+service newrelic-sysmond start
+service nginx start
