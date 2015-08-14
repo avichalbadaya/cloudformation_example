@@ -11,7 +11,7 @@ yum -y install zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel r
 yum -y install tar
 yum -y install epel-release
 cd /tmp && wget http://nginx.org/packages/centos/6/noarch/RPMS/nginx-release-centos-6-0.el6.ngx.noarch.rpm && rpm -ivh nginx-release-centos-6-0.el6.ngx.noarch.rpm
-yum install nginx
+yum -y install nginx
 chkconfig nginx on
 rpm -Uvh https://download.newrelic.com/pub/newrelic/el5/x86_64/newrelic-repo-5-3.noarch.rpm
 yum -y install newrelic-sysmond
