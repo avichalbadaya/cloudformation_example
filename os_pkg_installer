@@ -16,4 +16,5 @@ rpm -Uvh https://download.newrelic.com/pub/newrelic/el5/x86_64/newrelic-repo-5-3
 yum -y install newrelic-sysmond
 nrsysmond-config --set license_key=38874c0f5f7ad5e8a9169ac619a5ea8062267ae6
 service newrelic-sysmond start
+chkconfig nginx on
 service nginx start
