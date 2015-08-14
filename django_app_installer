@@ -3,10 +3,16 @@ cd /tmp
 wget http://python.org/ftp/python/2.7.6/Python-2.7.6.tar.xz
 tar xf Python-2.7.6.tar.xz
 cd Python-2.7.6 
-./configure --prefix=/usr/local --enable-unicode=ucs4 --enable-shared LDFLAGS="-Wl,-rpath /usr/local/lib" 
+./configure --prefix=/usr/local
 make 
 make altinstall
+export PATH="/usr/local/bin:$PATH"
 cd /tmp
+wget --no-check-certificate https://pypi.python.org/packages/source/s/setuptools/setuptools-1.4.2.tar.gz
+tar -xvf setuptools-1.4.2.tar.gz
+cd setuptools-1.4.2
+python2.7 setup.py install
+cd /tmp/
 wget https://bitbucket.org/pypa/setuptools/raw/bootstrap/ez_setup.py
 python2.7 ez_setup.py
 easy_install-2.7 virtualenv
