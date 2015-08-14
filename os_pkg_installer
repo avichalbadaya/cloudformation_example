@@ -12,9 +12,13 @@ yum -y install tar
 yum -y install epel-release
 cd /tmp && wget http://nginx.org/packages/centos/6/noarch/RPMS/nginx-release-centos-6-0.el6.ngx.noarch.rpm && rpm -ivh nginx-release-centos-6-0.el6.ngx.noarch.rpm
 yum install nginx
+chkconfig nginx on
 rpm -Uvh https://download.newrelic.com/pub/newrelic/el5/x86_64/newrelic-repo-5-3.noarch.rpm
 yum -y install newrelic-sysmond
-nrsysmond-config --set license_key=38874c0f5f7ad5e8a9169ac619a5ea8062267ae6
+nrsysmond-config --set license_key=
+cd /etc/init.d/
+wget https://raw.githubusercontent.com/avichalbadaya/cloudformation_example/625390b217d620cfa81b0bd176b9af72f2ca0579/django_app_init
+chmod 755 django_app_init
+chkconfig django_app_init on
 service newrelic-sysmond start
-chkconfig nginx on
 service nginx start
