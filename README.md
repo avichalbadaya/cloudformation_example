@@ -15,23 +15,23 @@ It creates a autoscalable stack for django blog application with following compo
 - Enables cloudwatch and new relic monitoring.
 
 ## Scaling :
-1. Scaling of Web server (ec2 instances) happens automatically and could be modified in CF template .
-2. MySQL db sits on RDS hence could be scaled up with only a few mouse clicks or an API call and no downtime. Frequent backups are another feature.
-3. Scaled up instances comes under LB and LB only puts them once we have service running.
+- Scaling of Web server (ec2 instances) happens automatically and could be modified in CF template .
+- MySQL db sits on RDS hence could be scaled up with only a few mouse clicks or an API call and no downtime. Frequent backups are another feature.
+- Scaled up instances comes under LB and LB only puts them once we have service running.
 
 ## Security :
 There are measure taken on different levels of stack to make this stack secure. Here are few main points:
-1. All resorcues are sitting under your vpc and subnet.
-2. Instances can only be pinged on ports 22/443/80 . And from web end , load balancer has just port 80 opened .
-3. MySQL RDS db can only be reached by ec2 instances which are attached with a particualar security group.
-4. Root user cannot ssh into ec2 instance direclty .
-5. centos uses sha512 instead of md5 for password protection
-6. cron jobs and wireless are disabled for all users.
-7. user passwords expire in 90 days and logged in idle users will be removed after 30 minutes .
+- All resorcues are sitting under your vpc and subnet.
+- Instances can only be pinged on ports 22/443/80 . And from web end , load balancer has just port 80 opened .
+- MySQL RDS db can only be reached by ec2 instances which are attached with a particualar security group.
+- Root user cannot ssh into ec2 instance direclty .
+- centos uses sha512 instead of md5 for password protection
+- cron jobs and wireless are disabled for all users.
+- user passwords expire in 90 days and logged in idle users will be removed after 30 minutes .
 
 ## Disaster Management :
-1. If ec2 instance suddenly reboots , nginx service and django app will automatically start on bootup.
-2. There are frequent backups for MySQL DB which can help in db recovery if something goes wrong.
+- If ec2 instance suddenly reboots , nginx service and django app will automatically start on bootup.
+- There are frequent backups for MySQL DB which can help in db recovery if something goes wrong.
 
 ## How to run it :
 To deploy sample_cf_tmp.json , you will need to make very minimal changes to this template :
