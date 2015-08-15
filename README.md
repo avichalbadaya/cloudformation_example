@@ -1,6 +1,4 @@
-# cloudformation_example
-
-CF temaplate file :- sample_cf_tmp.json
+## DJANGO BLOG APP STACK CREATION USING CLOUDFORMATION
 ## What it does :
 It creates a autoscalable stack for django blog application with following components created automatically :
 - EC2 Instances from CentOS 6.5 base image where dango application is hosted 
@@ -33,6 +31,12 @@ There are measure taken on different levels of stack to make this stack secure. 
 ## Disaster Management :
 - If ec2 instance suddenly reboots , nginx service and django app will automatically start on bootup.
 - There are frequent backups for MySQL DB which can help in db recovery if something goes wrong.
+
+#Files:
+- cf_scripts/behance_cf_template.json : cloudformation template file (s3 link https://s3.amazonaws.com/sample-django-cf-scripts/behance_cf_template.json)
+- cf_scripts/os_pkg_installer : Script to prepare Centos for successfull installation of django app and also make ec2 instance secure (s3 link https://s3.amazonaws.com/sample-django-cf-scripts/os_pkg_installer)
+- cf_scripts/django_app_installer : Script to install python 2.7 , create virtiualenv , install python package dependencies and then deploy django app. (s3 link : https://s3.amazonaws.com/sample-django-cf-scripts/django_app_installer)
+- django_app_scripts/* : settings file for django app, django_app_init file for running django server as service and default.conf file for nginx to run as proxy.
 
 ## How to run it :
 To deploy sample_cf_tmp.json , you will need to make very minimal changes to this template :
