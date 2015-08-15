@@ -136,20 +136,33 @@ FILE_UPLOAD_PERMISSIONS = 0o644
 #############
 # DATABASES #
 #############
+
+
+db_creds=open('instanceinfo')
+for i, line in enumerate(db_creds):
+    if i==0:
+        DBHost=line.split(':')[1].strip()
+    elif i==2:
+        DBName=line.split(':')[1].strip()
+    elif i==3:
+        DBUser=line.split(':')[1].strip()
+    elif i==4:
+        DBPass=line.split(':')[1].strip()
+
 DATABASES = {
     "default": {
         # Add "postgresql_psycopg2", "mysql", "sqlite3" or "oracle".
         "ENGINE": "django.db.backends.mysql",
         # DB name or path to database file if using sqlite3.
-        "NAME": "",
+        "NAME": DBName,
         # Not used with sqlite3.
-        "USER": "",
+        "USER": DBUser,
         # Not used with sqlite3.
-        "PASSWORD": "",
+        "PASSWORD": DBPass,
         # Set to empty string for localhost. Not used with sqlite3.
-        "HOST": "",
+        "HOST": DBHost,
         # Set to empty string for default. Not used with sqlite3.
-        "PORT": "",
+        "PORT":"3306",
     }
 }
 
