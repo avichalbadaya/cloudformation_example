@@ -24,6 +24,7 @@ virtualenv .
 pip install mezzanine
 mezzanine-project project_name
 cd project_name
+wget -O /opt/Project/project_name/project_name/settings.py --no-check-certificate https://raw.githubusercontent.com/avichalbadaya/cloudformation_example/d0d23174bcb26de4d9bcfd4b3e32cd3ab595ab4a/settings.py
 python manage.py createdb --noinput
 cd /opt/Project/project_name/
 service django_app_init start
