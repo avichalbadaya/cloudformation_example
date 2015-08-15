@@ -2,7 +2,7 @@
 
 CF temaplate file :- sample_cf_tmp.json
 ## What it does :
-It creates a autoscalable stack for django blog application with following components automatically :
+It creates a autoscalable stack for django blog application with following components created automatically :
 - EC2 Instances from CentOS 6.5 base image where dango application is hosted 
 - MySQL database on RDS and active endpoint/dbname/password/username are pulled into a file while centos box is booted up and eventually used by django application .It also creates all tables required by django application.
 - All aws resoures are put under defined vpc and subnet .
