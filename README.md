@@ -13,6 +13,7 @@ It creates a autoscalable stack for django blog application with following compo
 - Running scripts for Django application envoirnment setup and deployment.
 - keeps a check on parameter values we provide in cf template
 - Enables cloudwatch and new relic monitoring.
+- Logs of installation of linux, pythong packages and django application deployment is captured under files /tmp/ossetup.log and /var/log/django_app_installer.log . These can be used to troubleshoot if any instace did not come up correctly. 
 
 ## Scaling :
 - Scaling of Web server (ec2 instances) happens automatically and could be modified in CF template .
@@ -40,5 +41,6 @@ To deploy sample_cf_tmp.json , you will need to make very minimal changes to thi
 - ELBInternetSubnets (provide subnets under defined vpc for atleast 2 regions)
 - DBSubnets (provide subnets under defined vpc for atleast 2 regions)
 * Make sure that we have internet connectivity as we are downloading django app and installation files from internet.
+-You can assign IAM role to ec2 instance in CF template by changing "IamInstanceProfile" value. 
  
 Once you make these changes , you can go to aws console and upload this template in Cloudformation service , create stack. Just follow next clicks and create it.
