@@ -1,4 +1,10 @@
 #!/bin/bash
+###Script Description
+#Author:Avichal Badaya
+#Description:Script is to deploy sample django application
+###End Description
+
+#Installing python 2.7 as centos 6.5 ami has python 2.6 
 cd /tmp 
 wget http://python.org/ftp/python/2.7.6/Python-2.7.6.tar.xz
 tar xf Python-2.7.6.tar.xz
@@ -7,25 +13,39 @@ cd Python-2.7.6
 make 
 make altinstall
 export PATH="/usr/local/bin:$PATH"
+
+#installing setuptools for python
 cd /tmp
 wget --no-check-certificate https://pypi.python.org/packages/source/s/setuptools/setuptools-1.4.2.tar.gz
 tar -xvf setuptools-1.4.2.tar.gz
 cd setuptools-1.4.2
 python2.7 setup.py install
+
+#installing easy_install
 cd /tmp/
 wget https://bitbucket.org/pypa/setuptools/raw/bootstrap/ez_setup.py
 python2.7 ez_setup.py
+
+#installing virtualenv as Django application and its dependencies will be installed in virtualenv
 easy_install-2.7 virtualenv
+
+#installing django project in virtual enviornment
 cd /opt 
 mkdir Project
-cd Project 
+cd Project
 virtualenv .
 . bin/activate
 pip install mezzanine
 mezzanine-project project_name
 cd project_name
+
+#replacing settings file
 wget -O /opt/Project/project_name/project_name/settings.py --no-check-certificate https://raw.githubusercontent.com/avichalbadaya/cloudformation_example/d0d23174bcb26de4d9bcfd4b3e32cd3ab595ab4a/settings.py
 cp /tmp/instanceinfo /opt/Project/project_name/
+
+#creating tables in mysqldb
 python manage.py createdb --noinput
 cd /opt/Project/project_name/
+
+#starting django application as service
 service django_app_init start
