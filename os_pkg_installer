@@ -1,4 +1,8 @@
 #!/bin/bash
+###Script Description
+#Author:Avichal Badaya
+#Description:Script is to install linux packages and prepare centos 6.5 for django app deployment
+###End Description
 yum -y clean all
 yum -y install mod_ssl
 yum -y install crypto-utils
