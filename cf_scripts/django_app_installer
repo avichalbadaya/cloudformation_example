@@ -40,7 +40,7 @@ mezzanine-project project_name
 cd project_name
 
 #replacing settings file
-wget -O /opt/Project/project_name/project_name/settings.py --no-check-certificate https://raw.githubusercontent.com/avichalbadaya/cloudformation_example/d0d23174bcb26de4d9bcfd4b3e32cd3ab595ab4a/settings.py
+wget -O /opt/Project/project_name/project_name/settings.py --no-check-certificate https://s3.amazonaws.com/sample-django-cf-scripts/settings.py
 cp /tmp/instanceinfo /opt/Project/project_name/
 
 #creating tables in mysqldb
