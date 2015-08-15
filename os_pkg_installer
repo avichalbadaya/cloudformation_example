@@ -1,5 +1,5 @@
 #!/bin/bash
-yum -y update && yum clean all
+yum -y clean all
 yum -y install mod_ssl
 yum -y install crypto-utils
 yum -y install git 
