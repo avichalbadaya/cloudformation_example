@@ -3,6 +3,7 @@
 #Author:Avichal Badaya
 #Description:Script is to install linux packages and prepare centos 6.5 for django app deployment
 ###End Description
+#intsll basic linux packages
 yum -y clean all
 yum -y install mod_ssl
 yum -y install crypto-utils
@@ -13,13 +14,33 @@ yum -y install ntpd
 yum groupinstall -y 'development tools'
 yum -y install zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gdbm-devel db4-devel libpcap-devel xz-devel
 yum -y install tar
+##Security stuff
+#Passwords expire every 90 days
+perl -npe 's/PASS_MAX_DAYS\s+99999/PASS_MAX_DAYS 90/' -i /etc/login.defs
+# Passwords may only be changed once a day
+perl -npe 's/PASS_MIN_DAYS\s+0/PASS_MIN_DAYS 1/g' -i /etc/login.defs
+#Using sha512 instead of md5 for password protection
+authconfig --passalgo=sha512 --update
+#Idle users will be removed after 30 minutes
+echo "readonly TMOUT=1800" >> /etc/profile.d/os-security.sh
+echo "readonly HISTFILE" >> /etc/profile.d/os-security.sh
+chmod +x /etc/profile.d/os-security.sh
+#disable wireless
+for i in $(find /lib/modules/`uname -r`/kernel/drivers/net/wireless -name "*.ko" -type f) ; do echo blacklist $i >> /etc/modprobe.d/blacklist-wireless ; done
+#diable cron for all users except root
+touch /etc/cron.allow
+chmod 600 /etc/cron.allow
+awk -F: '{print $1}' /etc/passwd | grep -v root > /etc/cron.deny
+##End Security stuff
 yum -y install epel-release
 cd /tmp && wget http://nginx.org/packages/centos/6/noarch/RPMS/nginx-release-centos-6-0.el6.ngx.noarch.rpm && rpm -ivh nginx-release-centos-6-0.el6.ngx.noarch.rpm
 yum -y install nginx
 chkconfig nginx on
+#New Relic Installation
 rpm -Uvh https://download.newrelic.com/pub/newrelic/el5/x86_64/newrelic-repo-5-3.noarch.rpm
 yum -y install newrelic-sysmond
 nrsysmond-config --set license_key=
+#End New Relic installation
 cd /etc/init.d/
 wget https://raw.githubusercontent.com/avichalbadaya/cloudformation_example/625390b217d620cfa81b0bd176b9af72f2ca0579/django_app_init
 chmod 755 django_app_init
