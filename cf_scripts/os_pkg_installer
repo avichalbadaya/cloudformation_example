@@ -42,11 +42,11 @@ yum -y install newrelic-sysmond
 nrsysmond-config --set license_key=
 #End New Relic installation
 cd /etc/init.d/
-wget https://raw.githubusercontent.com/avichalbadaya/cloudformation_example/625390b217d620cfa81b0bd176b9af72f2ca0579/django_app_init
+wget https://s3.amazonaws.com/sample-django-cf-scripts/django_app_init
 chmod 755 django_app_init
 chkconfig django_app_init on
 cd /tmp
-wget https://raw.githubusercontent.com/avichalbadaya/cloudformation_example/369ee373cef7ac1c14f55facf6c7f194920de1f3/default.conf
+wget https://s3.amazonaws.com/sample-django-cf-scripts/default.conf
 yes | cp default.conf /etc/nginx/conf.d/
 service newrelic-sysmond start
 service nginx start
