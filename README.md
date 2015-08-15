@@ -40,7 +40,7 @@ To deploy sample_cf_tmp.json , you will need to make very minimal changes to thi
 - InstanceWebSubnets (provide subnet under this vpc, present in us-east-1a as we are using this region)
 - ELBInternetSubnets (provide subnets under defined vpc for atleast 2 regions)
 - DBSubnets (provide subnets under defined vpc for atleast 2 regions)
-* Make sure that we have internet connectivity as we are downloading django app and installation files from internet.
+** Make sure that we have internet connectivity as we are downloading django app and installation files from internet.
 -You can assign IAM role to ec2 instance in CF template by changing "IamInstanceProfile" value. 
  
 Once you make these changes , you can go to aws console and upload this template in Cloudformation service , create stack. Just follow next clicks and create it.
