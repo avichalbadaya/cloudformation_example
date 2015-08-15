@@ -1,6 +1,8 @@
 #!/bin/bash
 # /etc/init.d/django_app_init
 ### BEGIN INIT INFO
+#Author:Avichal Badaya
+#Description:Script is to run django application as a service
 # Provides: django_app_init
 # Required-Start: 
 # Should-Start: 
