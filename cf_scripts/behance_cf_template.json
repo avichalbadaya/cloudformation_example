@@ -36,10 +36,10 @@
               "AllowedPattern": "beta|dev|lab|prod|qa|int"
           },
           "keyTenant": {
-              "Description": "Tenant (behance, adobe etc.)",
+              "Description": "Tenant (Blaw, Bfin etc.)",
               "Type": "String",
-              "Default": "Behance",
-              "AllowedPattern": "Behance|Adobe"
+              "Default": "BLaw",
+              "AllowedPattern": "BLaw|Bfin"
           },
           "keySubntwkset": {
               "Description": "Subnet set",
@@ -151,12 +151,12 @@
           "InstanceWebQty": {
               "Description": "Quantity of Web servers",
               "Type": "Number",
-              "Default": "4"
+              "Default": "1"
           },
           "InstanceWebDesiredQty": {
               "Description": "Quantity of Web servers",
               "Type": "Number",
-              "Default": "2"
+              "Default": "1"
           },
           "InstanceWebType": {
               "Description": "Web EC2 instance type",
@@ -303,7 +303,7 @@
                       }
                   ],
                   "HealthCheck": {
-                      "Target": "TCP:80",
+                      "Target": "HTTP:80/",
                       "HealthyThreshold": "2",
                       "UnhealthyThreshold": "5",
                       "Interval": "10",
@@ -319,24 +319,6 @@
                   },
                   "GroupDescription": "Sample Django App Web Server SG",
                   "SecurityGroupIngress": [
-                      {
-                          "IpProtocol": "tcp",
-                          "FromPort": "22",
-                          "ToPort": "22",
-                          "CidrIp": "192.168.0.0/16"
-                      },
-                      {
-                          "IpProtocol": "tcp",
-                          "FromPort": "22",
-                          "ToPort": "22",
-                          "CidrIp": "172.26.0.0/16"
-                      },
-                      {
-                          "IpProtocol": "tcp",
-                          "FromPort": "22",
-                          "ToPort": "22",
-                          "CidrIp": "10.0.0.0/8"
-                      },
                       {
                           "IpProtocol": "tcp",
                           "FromPort": "22",
@@ -606,7 +588,7 @@
                           },
                           "commands": {
                               "a-os-install": {
-                                  "command": "./tmp/ossetup > /tmp/ossetup.log"
+                                  "command": "/tmp/ossetup > /tmp/ossetup.log"
                               },
                               "b-app-install": {
                                   "command": "/tmp/django_app_installer > /var/log/django_app_installer.log"
@@ -616,7 +598,6 @@
                   }
               },
               "Properties": {
-                  "IamInstanceProfile": "admin",
                   "ImageId": {
                       "Ref": "InstanceWebAmi"
                   },
@@ -637,9 +618,9 @@
                               "",
                               [
                                   "#!/bin/bash\n",
-                                  "wget -O /tmp/ossetup --no-check-certificate https://raw.githubusercontent.com/avichalbadaya/cloudformation_example/fd342714dcf83e93e86a717575524adf8e6cf622/os_pkg_installer\n",
+                                  "wget -O /tmp/ossetup --no-check-certificate https://s3.amazonaws.com/sample-django-cf-scripts/os_pkg_installer\n",
                                   "chmod 755 /tmp/ossetup\n",
-                                  "wget -O /tmp/django_app_installer --no-check-certificate https://raw.githubusercontent.com/avichalbadaya/cloudformation_example/9387274ea4c65c929d2043d757bfacea5203bf61/django_app_installer\n",
+                                  "wget -O /tmp/django_app_installer --no-check-certificate https://s3.amazonaws.com/sample-django-cf-scripts/django_app_installer\n",
                                   "chmod 755 /tmp/django_app_installer\n",
                                   "cfn-init -s ",
                                   {
@@ -650,10 +631,6 @@
                                   {
                                       "Ref": "AWS::Region"
                                   },
-                                  "\n",
-                                  "/tmp/ossetup",
-                                  "\n",
-                                  "/tmp/django_app_installer",
                                   "\n"
                               ]
                           ]
