@@ -21,7 +21,7 @@ wget https://raw.githubusercontent.com/avichalbadaya/cloudformation_example/6253
 chmod 755 django_app_init
 chkconfig django_app_init on
 cd /tmp
-wget https://raw.githubusercontent.com/avichalbadaya/cloudformation_example/32d2d3a2c95f44f6659250360faca6555b95cc76/default.conf
+wget https://raw.githubusercontent.com/avichalbadaya/cloudformation_example/369ee373cef7ac1c14f55facf6c7f194920de1f3/default.conf
 yes | cp default.conf /etc/nginx/conf.d/
 service newrelic-sysmond start
 service nginx start
