@@ -1,0 +1,12 @@
+{
+	"family": "DjangoApp",
+  "containerDefinitions": [
+    {
+      "name": "DjangoDeployTask",
+      "image": "avichalbadaya/django-sample-app",
+      "cpu":10,
+      "memory":500,
+      "essential":"true"
+    }
+  ]
+}
