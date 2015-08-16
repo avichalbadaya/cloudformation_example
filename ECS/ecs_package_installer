@@ -1,0 +1,13 @@
+#!/bin/bash
+###Script Description
+#Author:Avichal Badaya
+#Description:Script is to install linux packages and prepare centos 6.5 for django app deployment
+###End Description
+#intsll basic linux packages
+
+yum -y install wget
+cd /etc/ecs/
+yes | wget --no-check-certificate https://s3.amazonaws.com/sample-django-cf-scripts/ecs.config
+docker stop ecs-agent
+rm /var/lib/ecs/data/ecs_agent_data.json
+docker run --name ecs-agent-behance -d -v /var/run/docker.sock:/var/run/docker.sock -v /var/log/ecs:/log -v /var/lib/ecs/data:/data -p 127.0.0.1:51678:51678 -e ECS_CLUSTER=BehanceTestCluster amazon/amazon-ecs-agent
