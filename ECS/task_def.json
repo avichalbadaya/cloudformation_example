@@ -6,6 +6,13 @@
       "image": "avichalbadaya/django-sample-app",
       "cpu":10,
       "memory":500,
+      "portMappings": [
+                {
+                    "containerPort": 80, 
+                    "hostPort": 80, 
+                    "protocol": ""
+                }
+            ], 
       "essential":"true"
     }
   ]
