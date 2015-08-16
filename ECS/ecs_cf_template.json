@@ -475,17 +475,6 @@
       },
           "LaunchConfig": {
               "Type": "AWS::AutoScaling::LaunchConfiguration",
-              "Metadata": {
-                  "AWS::CloudFormation::Init": {
-                      "config": {
-                          "commands": {
-                              "a-os-install": {
-                                  "command": "/tmp/ossetup > /tmp/ossetup.log"
-                              }
-                          }
-                      }
-                  }
-              },
               "Properties": {
                 "IamInstanceProfile":"ecsInstanceRole",
                   "ImageId": {
@@ -511,16 +500,7 @@
                                   "yum -y install wget\n",
                                   "wget -O /tmp/ossetup --no-check-certificate https://s3.amazonaws.com/sample-django-cf-scripts/ecs_pkg_installer\n",
                                   "chmod 755 /tmp/ossetup\n",
-                                  "cfn-init -s ",
-                                  {
-                                      "Ref": "AWS::StackId"
-                                  },
-                                  " -r LaunchConfig ",
-                                  "         --region ",
-                                  {
-                                      "Ref": "AWS::Region"
-                                  },
-                                  "\n"
+                                  "/tmp/ossetup\n"
                               ]
                           ]
                       }
