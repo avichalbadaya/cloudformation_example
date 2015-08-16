@@ -1,0 +1,9 @@
+
+##create cluster
+aws ecs create-cluster --cluster-name "BehanceTestCluster"
+
+##create task to run on that cluster
+aws ecs register-task-definition --family djangoAppDeploy --container-definitions "[{\"name\":\"DjangoDeployTask\",\"image\":\"avichalbadaya/django-sample-app\",\"cpu\":10,\"memory\":500,\"essential\":true}]"
+
+##create service to run task
+aws ecs create-service --service-name ecs-simple-service --cluster BehanceTestCluster --task-definition DjangoDeployTask --desired-count 1
