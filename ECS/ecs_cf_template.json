@@ -1,0 +1,531 @@
+  {
+      "AWSTemplateFormatVersion": "2010-09-09",
+      "Description": "Create a Sample Python Application Stack",
+      "Parameters": {
+          "VpcId": {
+              "Type": "String",
+              "Default": "vpc-05d93061",
+              "Description": "Vpc Id to deploy to",
+              "AllowedPattern": "^vpc-[0-9a-fA-F]{8,8}"
+          },
+          "webdnsprefix": {
+              "Default": "web.behance.test",
+              "Description": "Web DNS prefix",
+              "Type": "String"
+          },
+          "webdnszone": {
+              "Default": "test",
+              "Description": "Web DNS zone ID",
+              "Type": "String"
+          },
+          "KeyName": {
+              "Description": "Name of an existing EC2 KeyPair to enable SSH access to the instances",
+              "Type": "String",
+              "Default": "behance"
+          },
+          "keyNtwk": {
+              "Description": "Network (gdsn,lab,shared)",
+              "Type": "String",
+              "Default": "shared",
+              "AllowedPattern": "gdsn|lab|shared"
+          },
+          "keyEnv": {
+              "Description": "Environment (beta, dev, lab, shared, qa, prod, int)",
+              "Type": "String",
+              "Default": "dev",
+              "AllowedPattern": "beta|dev|lab|prod|qa|int"
+          },
+          "keyTenant": {
+              "Description": "Tenant (behance, adobe etc.)",
+              "Type": "String",
+              "Default": "behance",
+              "AllowedPattern": "behance|adobe"
+          },
+          "keySubntwkset": {
+              "Description": "Subnet set",
+              "Type": "String",
+              "Default": "default",
+              "AllowedPattern": "default"
+          },
+          "keysubtenant": {
+              "Description": "Subtenant",
+              "Type": "String",
+              "Default": "tenant",
+              "AllowedPattern": "tenant"
+          },
+          "keyApp": {
+              "Description": "App",
+              "Type": "String",
+              "Default": "Default",
+              "AllowedPattern": ".{1,16}"
+          },
+          "keyTier": {
+              "Description": "Tier",
+              "Type": "String",
+              "Default": "pro",
+              "AllowedPattern": "pub|pro|pri"
+          },
+          "keyAz": {
+              "Description": "AZ for tag",
+              "Type": "String",
+              "Default": "1a",
+              "AllowedPattern": "1[a-z]"
+          },
+          "keySupport": {
+              "Description": "Support",
+              "Type": "String",
+              "Default": "devops",
+              "AllowedPattern": "netops|devops|sysops"
+          },
+          "keyCreatedby": {
+              "Description": "Created by ",
+              "Type": "String",
+              "Default": "122240",
+              "AllowedPattern": "[0-9]{6,6}"
+          },
+          "keyCofa": {
+              "Description": "COFA",
+              "Type": "String",
+              "Default": "5",
+              "AllowedPattern": ".{0,8}"
+          },
+          "keyOs": {
+              "Description": "Operating System",
+              "Type": "String",
+              "Default": "5",
+              "AllowedPattern": ".{1,10}"
+          },
+          "keyRole": {
+              "Description": "Role",
+              "Type": "String",
+              "Default": "Role",
+              "AllowedPattern": ".{0,10}"
+          },
+          "keyDb": {
+              "Description": "DB",
+              "Type": "String",
+              "Default": "NA",
+              "AllowedPattern": ".{0,8}"
+          },
+          "keyShutdowntime": {
+              "Description": "Shutdown Time",
+              "Type": "String",
+              "Default": "23",
+              "AllowedPattern": "([01][0-9])|(2[0-3])|exempt"
+          },
+          "keyCmdb": {
+              "Description": "CMDB (yes/no)",
+              "Type": "String",
+              "Default": "no",
+              "AllowedPattern": "yes|no|y|n"
+          },
+          "keySysmon": {
+              "Description": "Standard Monitoring?",
+              "Type": "String",
+              "Default": "no",
+              "AllowedPattern": "yes|no|y|n"
+          },
+          "keySla": {
+              "Description": "Maintenance Window",
+              "Type": "String",
+              "Default": "sat 2300 - sun 0200",
+              "AllowedPattern": ".{0,32}"
+          },
+          "keyBkp": {
+              "Description": "Backup Group (A-Z)",
+              "Type": "String",
+              "Default": "Z",
+              "AllowedPattern": "[A-Z]"
+          },
+          "keyRet": {
+              "Description": "Retention Days",
+              "Type": "String",
+              "Default": "7",
+              "AllowedPattern": "[1-7]"
+          },
+          "keyBkv": {
+              "Description": "Backup Volumes",
+              "Type": "String",
+              "Default": "all"
+          },
+          "InstanceWebQty": {
+              "Description": "Quantity of Web servers",
+              "Type": "Number",
+              "Default": "1"
+          },
+          "InstanceWebDesiredQty": {
+              "Description": "Quantity of Web servers",
+              "Type": "Number",
+              "Default": "1"
+          },
+          "InstanceWebType": {
+              "Description": "Web EC2 instance type",
+              "Type": "String",
+              "Default": "t2.micro",
+              "AllowedValues": [
+                  "t2.micro",
+                  "m1.small",
+                  "m1.medium",
+                  "m1.large",
+                  "m1.xlarge",
+                  "m2.xlarge",
+                  "m2.2xlarge",
+                  "m2.4xlarge",
+                  "m3.xlarge",
+                  "m3.2xlarge",
+                  "c1.medium",
+                  "c1.xlarge",
+                  "cc1.4xlarge",
+                  "cc2.8xlarge",
+                  "cg1.4xlarge"
+              ],
+              "ConstraintDescription": "must be a valid EC2 instance type."
+          },
+          "InstanceWebAmi": {
+              "Description": "AMI ID for web servers",
+              "Type": "String",
+              "Default": "ami-efc56584",
+              "AllowedPattern": "^ami-[0-9a-fA-F]{8,8}"
+          },
+          "InstanceWebName": {
+              "Description": "Name of the web servers (without the unique number)",
+              "Type": "String",
+              "Default": "vir-1243333a",
+              "AllowedPattern": "^vir-[0-9a-fA-F]{8,8}"
+          },
+          "InstanceWebSubnets": {
+              "Type": "CommaDelimitedList",
+              "Default": "subnet-52d3ee25",
+              "Description": "The list of SubnetIds for the web servers"
+          },
+          "ELBInternetSubnets": {
+              "Type": "CommaDelimitedList",
+              "Default": "subnet-52d3ee25,subnet-bfc692e6",
+              "Description": "The list of SubnetIds for internet subnets"
+          },
+          "InstanceWebAZs": {
+              "Type": "CommaDelimitedList",
+              "Default": "us-east-1a",
+              "Description": "The list of Availability Zones for the web servers"
+          }
+      },
+      "Resources": {
+          "ElasticLoadBalancer": {
+              "Type": "AWS::ElasticLoadBalancing::LoadBalancer",
+              "Metadata": {
+                  "Comment": "Web server ELB"
+              },
+              "Properties": {
+                  "Scheme": "internet-facing",
+                  "Subnets": {
+                      "Ref": "ELBInternetSubnets"
+                  },
+                  "LBCookieStickinessPolicy": [
+                      {
+                          "PolicyName": "CookieBasedPolicy",
+                          "CookieExpirationPeriod": "30"
+                      }
+                  ],
+                  "Listeners": [
+                      {
+                          "LoadBalancerPort": "80",
+                          "InstancePort": "80",
+                          "Protocol": "HTTP",
+                          "PolicyNames": [
+                              "CookieBasedPolicy"
+                          ]
+                      }
+                  ],
+                  "HealthCheck": {
+                      "Target": "HTTP:80/",
+                      "HealthyThreshold": "2",
+                      "UnhealthyThreshold": "5",
+                      "Interval": "10",
+                      "Timeout": "5"
+                  }
+              }
+          },
+          "WebServerSecurityGroup": {
+              "Type": "AWS::EC2::SecurityGroup",
+              "Properties": {
+                  "VpcId": {
+                      "Ref": "VpcId"
+                  },
+                  "GroupDescription": "Sample Django App Web Server SG",
+                  "SecurityGroupIngress": [
+                      {
+                          "IpProtocol": "tcp",
+                          "FromPort": "22",
+                          "ToPort": "22",
+                          "CidrIp": "0.0.0.0/0"
+                      },
+                      {
+                          "IpProtocol": "tcp",
+                          "FromPort": "80",
+                          "ToPort": "80",
+                          "CidrIp": "0.0.0.0/0"
+                      },
+                      {
+                          "IpProtocol": "tcp",
+                          "FromPort": "443",
+                          "ToPort": "443",
+                          "CidrIp": "0.0.0.0/0"
+                      }
+                  ]
+              }
+          },
+          "WebServerGroup": {
+              "Type": "AWS::AutoScaling::AutoScalingGroup",
+              "Properties": {
+                  "AvailabilityZones": {
+                      "Ref": "InstanceWebAZs"
+                  },
+                  "VPCZoneIdentifier": {
+                      "Ref": "InstanceWebSubnets"
+                  },
+                  "LaunchConfigurationName": {
+                      "Ref": "LaunchConfig"
+                  },
+                  "MinSize": "1",
+                  "MaxSize": {
+                      "Ref": "InstanceWebQty"
+                  },
+                  "DesiredCapacity": {
+                      "Ref": "InstanceWebDesiredQty"
+                  },
+                  "LoadBalancerNames": [
+                      {
+                          "Ref": "ElasticLoadBalancer"
+                      }
+                  ],
+                  "Tags": [
+                      {
+                          "Key": "Name",
+                          "Value": {
+                              "Ref": "InstanceWebName"
+                          },
+                          "PropagateAtLaunch": true
+                      },
+                      {
+                          "Key": "ProvisioningKey",
+                          "Value": {
+                              "Fn::Join": [
+                                  "",
+                                  [
+                                      "ntwk=",
+                                      {
+                                          "Ref": "keyNtwk"
+                                      },
+                                      ":env=",
+                                      {
+                                          "Ref": "keyEnv"
+                                      },
+                                      ":tenant=",
+                                      {
+                                          "Ref": "keyTenant"
+                                      },
+                                      ":subntwkset=",
+                                      {
+                                          "Ref": "keySubntwkset"
+                                      },
+                                      ":subtenant=",
+                                      {
+                                          "Ref": "keyTenant"
+                                      },
+                                      ":app=",
+                                      {
+                                          "Ref": "keyApp"
+                                      },
+                                      ":tier=",
+                                      {
+                                          "Ref": "keyTier"
+                                      },
+                                      ":az=",
+                                      {
+                                          "Ref": "keyAz"
+                                      }
+                                  ]
+                              ]
+                          },
+                          "PropagateAtLaunch": true
+                      },
+                      {
+                          "Key": "TrackingKey",
+                          "Value": {
+                              "Fn::Join": [
+                                  "",
+                                  [
+                                      "Support=",
+                                      {
+                                          "Ref": "keySupport"
+                                      },
+                                      ":CreatedBy=",
+                                      {
+                                          "Ref": "keyCreatedby"
+                                      },
+                                      ":cofa=",
+                                      {
+                                          "Ref": "keyCofa"
+                                      },
+                                      ":os=",
+                                      {
+                                          "Ref": "keyOs"
+                                      },
+                                      ":role=",
+                                      {
+                                          "Ref": "keyRole"
+                                      },
+                                      ":db=",
+                                      {
+                                          "Ref": "keyDb"
+                                      },
+                                      ":shutdown_time=",
+                                      {
+                                          "Ref": "keyShutdowntime"
+                                      },
+                                      ":cmdb=",
+                                      {
+                                          "Ref": "keyCmdb"
+                                      },
+                                      ":sys_mon=",
+                                      {
+                                          "Ref": "keySysmon"
+                                      },
+                                      ":SLA=",
+                                      {
+                                          "Ref": "keySla"
+                                      },
+                                      ":BKP=",
+                                      {
+                                          "Ref": "keyBkp"
+                                      },
+                                      ":RET=",
+                                      {
+                                          "Ref": "keyRet"
+                                      },
+                                      ":BKV=",
+                                      {
+                                          "Ref": "keyBkv"
+                                      }
+                                  ]
+                              ]
+                          },
+                          "PropagateAtLaunch": true
+                      }
+                  ]
+              }
+          },
+          "WebServerScaleUpPolicy" : {
+        "Type" : "AWS::AutoScaling::ScalingPolicy",
+        "Properties" : {
+          "AdjustmentType" : "ChangeInCapacity",
+          "AutoScalingGroupName" : { "Ref" : "WebServerGroup" },
+          "Cooldown" : "60",
+          "ScalingAdjustment" : "1"
+        }
+      },
+      "WebServerScaleDownPolicy" : {
+        "Type" : "AWS::AutoScaling::ScalingPolicy",
+        "Properties" : {
+          "AdjustmentType" : "ChangeInCapacity",
+          "AutoScalingGroupName" : { "Ref" : "WebServerGroup" },
+          "Cooldown" : "60",
+          "ScalingAdjustment" : "-1"
+        }
+      },
+      "CPUAlarmHigh": {
+       "Type": "AWS::CloudWatch::Alarm",
+       "Properties": {
+          "AlarmDescription": "Scale-up if CPU > 90% for 10 minutes",
+          "MetricName": "CPUUtilization",
+          "Namespace": "AWS/EC2",
+          "Statistic": "Average",
+          "Period": "300",
+          "EvaluationPeriods": "2",
+          "Threshold": "90",
+          "AlarmActions": [ { "Ref": "WebServerScaleUpPolicy" } ],
+          "Dimensions": [
+            {
+              "Name": "AutoScalingGroupName",
+              "Value": { "Ref": "WebServerGroup" }
+            }
+          ],
+          "ComparisonOperator": "GreaterThanThreshold"
+        }
+      },
+      "CPUAlarmLow": {
+       "Type": "AWS::CloudWatch::Alarm",
+       "Properties": {
+          "AlarmDescription": "Scale-down if CPU < 70% for 10 minutes",
+          "MetricName": "CPUUtilization",
+          "Namespace": "AWS/EC2",
+          "Statistic": "Average",
+          "Period": "300",
+          "EvaluationPeriods": "2",
+          "Threshold": "70",
+          "AlarmActions": [ { "Ref": "WebServerScaleDownPolicy" } ],
+          "Dimensions": [
+            {
+              "Name": "AutoScalingGroupName",
+              "Value": { "Ref": "WebServerGroup" }
+            }
+          ],
+          "ComparisonOperator": "LessThanThreshold"
+        }
+      },
+          "LaunchConfig": {
+              "Type": "AWS::AutoScaling::LaunchConfiguration",
+              "Metadata": {
+                  "AWS::CloudFormation::Init": {
+                      "config": {
+                          "commands": {
+                              "a-os-install": {
+                                  "command": "/tmp/ossetup > /tmp/ossetup.log"
+                              }
+                          }
+                      }
+                  }
+              },
+              "Properties": {
+                "IamInstanceProfile":"ecsInstanceRole",
+                  "ImageId": {
+                      "Ref": "InstanceWebAmi"
+                  },
+                  "SecurityGroups": [
+                      {
+                          "Ref": "WebServerSecurityGroup"
+                      }
+                  ],
+                  "InstanceType": {
+                      "Ref": "InstanceWebType"
+                  },
+                  "KeyName": {
+                      "Ref": "KeyName"
+                  },
+                  "UserData": {
+                      "Fn::Base64": {
+                          "Fn::Join": [
+                              "",
+                              [
+                                  "#!/bin/bash\n",
+                                  "yum -y install wget\n",
+                                  "wget -O /tmp/ossetup --no-check-certificate https://s3.amazonaws.com/sample-django-cf-scripts/ecs_pkg_installer\n",
+                                  "chmod 755 /tmp/ossetup\n",
+                                  "cfn-init -s ",
+                                  {
+                                      "Ref": "AWS::StackId"
+                                  },
+                                  " -r LaunchConfig ",
+                                  "         --region ",
+                                  {
+                                      "Ref": "AWS::Region"
+                                  },
+                                  "\n"
+                              ]
+                          ]
+                      }
+                  }
+              }
+          }
+      }
+  }
