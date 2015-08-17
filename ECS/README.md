@@ -10,13 +10,15 @@ It creates a autoscalable stack for django blog application using cloudformation
 - All the stack resources except Cluster/Tasks and Service are created using Cloudformation and these ecs componenents are created by running "ecs_script" file.
 - All aws resoures are put under defined vpc and subnet .
 
-Scaling :
+## Scaling :
+
 - Scaling of Web server (ec2 instances) happens automatically and could be modified in CF template .
 - Scaled up instances comes under LB and LB only puts them once we have service running.
 
 ** Most of the settings for centos are similar to what we did in /cf_scripts/os_pkg_installer and /cf_scripts/django_app_installer in cloudformation stack of orinigal task.
 
-Files:
+## Files:
+
 - ECS/Dockerfile : Dockerfile for our Django app over centos6
 - ECS/ecs.config : Config file which is put in ec2 instance to identify correct cluster (s3 link https://s3.amazonaws.com/sample-django-cf-scripts/ecs.config)
 - ECS/ecsInstanceRole_policy : IAM role policy for ecsInstanceRole used to assign to ec2 instances.
@@ -26,7 +28,8 @@ Files:
 - ECS/task_def.json : sample ecs task definition .
 
 
-How to run it :
+## How to run it :
+
 - Step 1 : Install AWS CLI or you can use AWS console to create few things :
     1. Create a IAM role named "ecsInstanceRole" with policy similar to ECS/ecsInstanceRole_policy file.
     2. Create ECS cluster by running first command from ECS/ecs_script file or from AWS console and name it "BehanceTestCluster"
