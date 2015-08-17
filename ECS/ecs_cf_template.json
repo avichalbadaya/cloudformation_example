@@ -151,7 +151,7 @@
           "InstanceWebQty": {
               "Description": "Quantity of Web servers",
               "Type": "Number",
-              "Default": "1"
+              "Default": "5"
           },
           "InstanceWebDesiredQty": {
               "Description": "Quantity of Web servers",
