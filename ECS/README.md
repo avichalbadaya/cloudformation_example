@@ -14,7 +14,7 @@ Scaling :
 - Scaling of Web server (ec2 instances) happens automatically and could be modified in CF template .
 - Scaled up instances comes under LB and LB only puts them once we have service running.
 
-## Most of the settings for centos are similar to what we did in /cf_scripts/os_pkg_installer and /cf_scripts/django_app_installer in cloudformation stack of orinigal task.
+** Most of the settings for centos are similar to what we did in /cf_scripts/os_pkg_installer and /cf_scripts/django_app_installer in cloudformation stack of orinigal task.
 
 Files:
 - ECS/Dockerfile : Dockerfile for our Django app over centos6
