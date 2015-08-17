@@ -161,7 +161,7 @@
           "InstanceWebType": {
               "Description": "Web EC2 instance type",
               "Type": "String",
-              "Default": "t1.micro",
+              "Default": "m1.small",
               "AllowedValues": [
                   "t1.micro",
                   "m1.small",
